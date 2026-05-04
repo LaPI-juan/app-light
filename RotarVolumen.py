@@ -92,31 +92,3 @@ def process_dicom(dicom_folder, axis, angulo, medir=False):
         dist_final = medir_distancia(volumen_final, p1, p2)
 		
     return volumen_final
-
-# ------------------------------------------------------------------------------------
-#                                 Funciones multiples
-# ------------------------------------------------------------------------------------
-def leer_archivos_dicom_mult(rutas_DCM):
-    vols_dcm = []
-    for ruta in rutas_DCM:
-        vol_dcm = leer_archivos_dicom(ruta)
-        vol_array = sitk.GetArrayFromImage(vol_dcm)
-        vols_dcm.append(vol_array)
-
-    return vols_dcm
-
-def process_dicom_mult(parametros, rutas_DCM):
-    vols_fnl, spacings = [], []  
-
-    for i in range(len(rutas_DCM)):
-        img_fnl = process_dicom(rutas_DCM[i],
-                                         axis=[parametros[i][1],parametros[i][2],parametros[i][3]],
-                                         angulo=parametros[i][0],
-                                         medir=True)
-        
-        VF = sitk.GetArrayFromImage(img_fnl)
-        VF_spacing = img_fnl.GetSpacing()
-        vols_fnl.append(VF)
-        spacings.append(VF_spacing)
-
-    return vols_fnl, spacings
