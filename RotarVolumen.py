@@ -11,7 +11,8 @@ def leer_archivos_dicom(dicom_folder):
     dicom_names = reader.GetGDCMSeriesFileNames(dicom_folder)
     reader.SetFileNames(dicom_names)
     volumen = reader.Execute()
-    return volumen
+    volumen_array = sitk.GetArrayFromImage(volumen)
+    return volumen_array
 
 # ------------------------------------------------------------------------------------
 #                             Remuestreo a espaciado definido
