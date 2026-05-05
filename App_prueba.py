@@ -87,7 +87,7 @@ elif st.session_state.screen == 2:
     
     if upload_dcm_1:
         
-        upload_dcms = [upload_dcm_1,upload_dcm_2]#,upload_dcm_3,upload_dcm_4,upload_dcm_5,
+        upload_dcms = [upload_dcm_1,upload_dcm_2,upload_dcm_3]#,upload_dcm_4,upload_dcm_5,
                        #upload_dcm_6,upload_dcm_7,upload_dcm_8,upload_dcm_9,upload_dcm_10,
                        #upload_dcm_11]
         
@@ -223,7 +223,7 @@ elif st.session_state.screen == 2:
         	'''
         	st.markdown(textwrap.dedent(html_3), unsafe_allow_html=True)
         
-        	N_org_1 = st.slider('Volumen',min_value=1, max_value=2, step=1,key ='N_org1')
+        	N_org_1 = st.slider('Volumen',min_value=1, max_value=NV, step=1,key ='N_org1')
         	N_fnl_1 = st.slider('Corte',min_value=1, max_value=sld_nums[0], step=1,key ='N_fnl1')
 
         	img_orig_user_1 = Image.open(os.path.join(temp_png_orgs[N_org_1-1], f'slice_{(N_fnl_1-1):03d}.png'))
@@ -246,7 +246,7 @@ elif st.session_state.screen == 2:
         	'''
         	st.markdown(textwrap.dedent(html_3), unsafe_allow_html=True)
         
-        	N_org_2 = st.slider('Volumen',min_value=1, max_value=2, step=1,key ='N_org2')
+        	N_org_2 = st.slider('Volumen',min_value=1, max_value=NV, step=1,key ='N_org2')
         	N_fnl_2 = st.slider('Corte',min_value=1, max_value=sld_nums[0], step=1,key ='N_fnl2')
 
         	img_orig_user_2 = Image.open(os.path.join(temp_png_stds[N_org_2-1], f'slice_{(N_fnl_2-1):03d}.png'))
@@ -262,7 +262,7 @@ elif st.session_state.screen == 2:
         #                                   PESTAÑA DETECCION
         # ------------------------------------------------------------------------------------
         with tab3:
-            N_org_3 = st.slider('',min_value=1, max_value=2, step=1, key = 'sld_valva_1')
+            N_org_3 = st.slider('',min_value=1, max_value=NV, step=1, key = 'sld_valva_1')
             N_fnl_3 = st.slider('',min_value=1, max_value=sld_nums[1], step=1, key = 'sld_valva_2')
 
             img_fnl_user_3 = Image.open(os.path.join(temp_png_YOLOs[N_org_3-1][N_fnl_3-1],'slice_000.png'))
