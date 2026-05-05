@@ -150,7 +150,7 @@ elif st.session_state.screen == 2:
         if 'temp_png_stds' not in st.session_state:
             temp_dcm_stds, temp_png_std = [], []
             for ruta_DCM in rutas_DCM: 
-                V, spc_std = process_dicom(p_std, ruta_DCM)
+                V, spc_std = process_dicom(p_std[0], p_std[1:4], ruta_DCM)
                 temp_dcm_std = carpetaDCM(V, spc_std)
                 temp_png_std = carpetaPNG(V,0)
                 temp_dcm_stds.append(temp_dcm_std)
@@ -179,7 +179,7 @@ elif st.session_state.screen == 2:
         if 'temp_png_LVOTs' not in st.session_state:
             temp_png_valvs, temp_png_LVOTs = [], []
             for temp_dcm_std in temp_dcm_stds:
-                V, _ = process_dicom(p_LVOT,temp_dcm_std)
+                V, _ = process_dicom(p_LVOT[0], p_LVOT[1:4], temp_dcm_std)
                 n,m = V.shape[0], V.shape[1]
                 temp_png_LVOT = carpetaPNG(V,0)
                 temp_png_LVOTs.append(temp_png_LVOT)
