@@ -97,6 +97,7 @@ def uso_YOLO(ruta_modelo, rutas_PNG):
 
     vol_RGB, vol_masks = [], []
     indc, i = [], -1
+    model = YOLO(ruta_modelo)
 
     for ruta_PNG in rutas_PNG:
         V = CargarVolumen_YOLO(ruta_PNG)
