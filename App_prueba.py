@@ -148,7 +148,7 @@ elif st.session_state.screen == 2:
 
 		#### Carpetas temporales ####
         if 'temp_png_stds' not in st.session_state:
-            temp_dcm_stds, temp_png_std = [], []
+            temp_dcm_stds, temp_png_stds = [], []
             for ruta_DCM in rutas_DCM: 
                 V, spc_std = process_dicom(p_std[0], p_std[1:4], ruta_DCM)
                 temp_dcm_std = carpetaDCM(V, spc_std)
