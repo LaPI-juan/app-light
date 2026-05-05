@@ -9,8 +9,8 @@ from PIL import Image
 import numpy as np
 
 #### Funciones propias ####
-from RotarVolumen import leer_archivos_dicom, process_dicom, leer_archivos_dicom_mult, process_dicom_mult
-from inferencia import uso_RUBEN_mult, uso_YOLO_mult, CargarVolumen_YOLO
+from RotarVolumen import abrir_archivos_dicom, process_dicom
+from inferencia import uso_RUBEN, uso_YOLO, CargarVolumen_YOLO
 from conversor import carpetaPNG, carpetaPNG_paths, carpetaDCM
 
 #### Estilo HTML ####
@@ -114,18 +114,6 @@ elif st.session_state.screen == 2:
 
         rutas_DCM = st.session_state.rutas_DCM
         NV = st.session_state.NV
-
-        # ------------------------------------------------------------------------------------
-        #                                      ORIGINAL
-        # ------------------------------------------------------------------------------------
-		#### Carpeta temporal PNG ####
-#        if 'temp_png_orgs' not in st.session_state:
-#            HV = leer_archivos_dicom_mult(rutas_DCM)
-#            st.session_state.temp_png_orgs = [carpetaPNG(V,0) for V in HV]
-#            st.session_state.sld_nums = HV[0].shape[0:2]
-
-#        temp_png_orgs = st.session_state.temp_png_orgs
-#        sld_nums = st.session_state.sld_nums
 		
         # ------------------------------------------------------------------------------------
         #                                      ORIGINAL
@@ -134,7 +122,7 @@ elif st.session_state.screen == 2:
         if 'temp_png_orgs' not in st.session_state:
             temp_png_orgs = []
             for ruta_DCM in rutas_DCM:
-                V = leer_archivos_dicom(ruta_DCM)
+                V = abrir_archivos_dicom(ruta_DCM)
                 sld_nums = V.shape[0:2]
                 temp_png_org = carpetaPNG(V,0)
                 temp_png_orgs.append(temp_png_org)
@@ -152,22 +140,26 @@ elif st.session_state.screen == 2:
             url_estandar = 'https://drive.google.com/uc?export=download&id=10BglUsjZLKeeiqpGG5xY-Isy8vGAzrNg'
             output_estandar = 'modelo_estandar.pt'
             gdown.download(url_estandar, output_estandar, quiet=False)
-            st.session_state.p_std = uso_RUBEN_mult('modelo_estandar.pt',
-                                                    temp_png_orgs)
+            st.session_state.p_std = uso_RUBEN('modelo_estandar.pt',
+											   temp_png_orgs[0])
         
         p_std = st.session_state.p_std
-		
+
 		#### Carpetas temporales ####
         if 'temp_png_stds' not in st.session_state:
-            HV, spcs_std = process_dicom_mult(p_std,rutas_DCM)
-
-            st.session_state.temp_dcm_stds = [carpetaDCM(HV[i], spcs_std[i]) for i in range(len(HV))]
-            st.session_state.temp_png_stds  = [carpetaPNG(V,0) for V in HV]
-            st.session_state.spcs_std = spcs_std
-
+            temp_dcm_stds, temp_png_std = [], []
+            for ruta_DCM in rutas_DCM: 
+                V, spc_std = process_dicom(p_std, ruta_DCM)
+                temp_dcm_std = carpetaDCM(V, spc_std)
+                temp_png_std = carpetaPNG(V,0)
+                temp_dcm_stds.append(temp_dcm_std)
+                temp_png_stds.append(temp_png_std)
+				
+            st.session_state.temp_dcm_stds = temp_dcm_stds
+            st.session_state.temp_png_stds = temp_png_stds
+			
         temp_dcm_stds = st.session_state.temp_dcm_stds
         temp_png_stds = st.session_state.temp_png_stds
-        spcs_std = st.session_state.spcs_std
         
         # ------------------------------------------------------------------------------------
         #                                         LVOT
@@ -178,17 +170,22 @@ elif st.session_state.screen == 2:
             output_LVOT = 'modelo_LVOT.pt'
             gdown.download(url_LVOT, output_LVOT, quiet=False)
             st.session_state.p_LVOT = uso_RUBEN_mult('modelo_LVOT.pt',
-													 temp_png_stds)
+													 temp_png_stds[0])
         
         p_LVOT = st.session_state.p_LVOT
 
     	#### Carpetas temporales ####
         if 'temp_png_LVOTs' not in st.session_state:
-            HV, _ = process_dicom_mult(p_LVOT,temp_dcm_stds)
-            st.session_state.temp_png_LVOTs  = [carpetaPNG(V,0) for V in HV]
-            HV_2 = [[V[:,i,:] for i in range(V.shape[2])] for V in HV]
-            HV_np = [np.array(V) for V in HV_2]
-            st.session_state.temp_png_valvs = [[carpetaPNG(V[np.newaxis,i,:,:],0) for i in range(0,512)] for V in HV_np]
+            temp_png_valvs, temp_png_LVOTs = [], []
+            for temp_dcm_std in temp_dcm_stds
+                V, _ = process_dicom(p_LVOT,temp_dcm_std)
+				n,m = V.shape[0], V.shape[1]
+                temp_png_LVOT = carpetaPNG(V,0)
+                temp_png_LVOTs.append(temp_png_LVOT)
+
+                V = np.tranpose(m,n,m)
+                temp_png_valv = [carpetaPNG(V[np.newaxis,i,:,:],0) for i in range(0,m)]
+                temp_png_valvs.append(temp_png_valv)
             
         temp_png_LVOTs = st.session_state.temp_png_LVOTs
         temp_png_valvs = st.session_state.temp_png_valvs
