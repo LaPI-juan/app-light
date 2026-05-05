@@ -197,11 +197,19 @@ elif st.session_state.screen == 2:
         #                                    YOLO
         # ------------------------------------------------------------------------------------
         if 'temp_png_YOLOs' not in st.session_state:
-            HV = [[CargarVolumen_YOLO(ruta) for ruta in rutas] for rutas in temp_png_valvs]
-            HV = np.squeeze(np.array(HV))
-            st.session_state.temp_png_YOLOs = [carpetaPNG(HV[:,:,:,0],0)]
+            temp_png_YOLOs = []
+            for temp_png_valv in temp_png_valvs:
+                temp_png_YOLO = []
+                for ruta in temp_png_valv:
+                    V = CargarVolumen_YOLO(ruta)
+                    #img_YOLO = carpetaPNG(V[:,:,:,0])
+                    #temp_png_YOLO.append(img_YOLO)
+
+
+#            st.session_state.temp_png_YOLOs = temp_png_YOLOs
 			
-        temp_png_YOLOs = st.session_state.temp_png_YOLOs
+#        temp_png_YOLOs = st.session_state.temp_png_YOLOs
+        st.write(V.shape)
 
         tab1, tab2, tab3 = st.tabs(['Estándar', 'LVOT', 'Mascara'])
 
