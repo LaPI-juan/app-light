@@ -170,8 +170,8 @@ elif st.session_state.screen == 2:
             url_LVOT = 'https://drive.google.com/uc?export=download&id=15g-yPz4mVrDpgN4h0tnuuE7dt7-ZxRj_'
             output_LVOT = 'modelo_LVOT.pt'
             gdown.download(url_LVOT, output_LVOT, quiet=False)
-            st.session_state.p_LVOT = uso_RUBEN_mult('modelo_LVOT.pt',
-													 temp_png_stds[0])
+            st.session_state.p_LVOT = uso_RUBEN('modelo_LVOT.pt',
+												temp_png_stds[0])
         
         p_LVOT = st.session_state.p_LVOT
 
