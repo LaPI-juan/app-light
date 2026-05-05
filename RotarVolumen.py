@@ -6,13 +6,22 @@ import cv2
 # ------------------------------------------------------------------------------------
 #                                   Leer volumen DICOM
 # ------------------------------------------------------------------------------------
-def leer_archivos_dicom(dicom_folder):
+def abrir_archivos_dicom(dicom_folder):
     reader = sitk.ImageSeriesReader()
     dicom_names = reader.GetGDCMSeriesFileNames(dicom_folder)
     reader.SetFileNames(dicom_names)
     volumen = reader.Execute()
     volumen_array = sitk.GetArrayFromImage(volumen)
+	
     return volumen_array
+
+def leer_archivos_dicom(dicom_folder):
+    reader = sitk.ImageSeriesReader()
+    dicom_names = reader.GetGDCMSeriesFileNames(dicom_folder)
+    reader.SetFileNames(dicom_names)
+    volumen = reader.Execute()
+
+    return volumen
 
 # ------------------------------------------------------------------------------------
 #                             Remuestreo a espaciado definido
@@ -91,5 +100,8 @@ def process_dicom(dicom_folder, axis, angulo, medir=False):
         dist_iso = medir_distancia(volumen_iso, p1, p2)
         dist_rot = medir_distancia(volumen_rot, p1, p2)
         dist_final = medir_distancia(volumen_final, p1, p2)
+
+    volumen_np = sitk.GetArrayFromImage(volumen_final)
+    spc = volumen_final.GetSpacing()
 		
-    return volumen_final
+    return volumen_np, spc
