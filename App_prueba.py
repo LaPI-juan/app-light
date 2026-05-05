@@ -186,6 +186,9 @@ elif st.session_state.screen == 2:
                 V = V.transpose(2,0,1)
                 temp_png_valv = [carpetaPNG(V[np.newaxis,i,:,:],0) for i in range(V.shape[1])]
                 temp_png_valvs.append(temp_png_valv)
+
+            st.session_state. temp_png_LVOTs = temp_png_LVOTs
+            st.session_state.temp_png_valvs = temp_png_valvs
             
         temp_png_LVOTs = st.session_state.temp_png_LVOTs
         temp_png_valvs = st.session_state.temp_png_valvs
