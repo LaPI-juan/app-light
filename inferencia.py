@@ -93,31 +93,7 @@ def CargarVolumen_YOLO(root):
 
     return volume
 
-def CargarVolumen_NEW(root):
-    sliceFiles = sorted(os.listdir(root))
-
-    for slice_file in sliceFiles:
-        img_path = os.path.join(root, slice_file)
-
-        image = Image.open(img_path).convert("L")
-        image = np.array(image)
-
-        image = torch.tensor(image, dtype=torch.float32)
-
-        image = torch.nn.functional.interpolate(
-            image.unsqueeze(0).unsqueeze(0),
-            size=(640, 640),
-            mode='bilinear',
-            align_corners=False
-        ).squeeze(0).squeeze(0)
-		
-        image = image.unsqueeze(2).repeat(1, 1, 3)
-
-        image = image.numpy().astype(np.uint8)
-
-        yield image
-
-def uso_YOLO(ruta_modelo, ruta_PNG):
+def uso_YOLO(ruta_modelo, rutas_PNG):
     
     vol_in = CargarVolumen_YOLO(ruta_PNG)
     img_list = [vol for vol in vol_in]
@@ -145,13 +121,28 @@ def uso_YOLO(ruta_modelo, ruta_PNG):
             
     return np.array(vol_RGB), np.array(vol_masks), indc[0], indc[-1]
 
-def uso_YOLO_mult(ruta_modelo, rutas_PNG):
-    vols_RGB, vols_masks, indcs = [], [], [], []
+def uso_YOLO(ruta_modelo, rutas_PNG):
+
+    vol_RGB, vol_masks = [], []
+    indc, i = [], -1
 
     for ruta_PNG in rutas_PNG:
-        vol_RGB, vol_masks, indc_min, indc_max = uso_YOLO(ruta_modelo, ruta_PNG)
-        vols_RGB.append(vol_RGB)
-        vols_masks.append(vol_masks)
-        indcs.append([indc_min, indc_max])
-
-    return vols_RGB, vols_masks, indcs
+        V = CargarVolumen_YOLO(ruta_PNG)
+        results = [model(V)]
+        r = results[0]
+        conf_arr = r[0].boxes.conf.cpu().numpy()
+		
+        if conf_arr.size and conf_arr.max() > 0.65:
+            i += 1
+            j = int(np.argmax(conf_arr))
+            vol_RGB.append(cv2.cvtColor(r[0].plot(),cv2.COLOR_BGR2RGB))
+            vol_masks.append(r[0].masks.data.cpu().numpy()[j,:,:])
+            
+            if r[0].boxes.cls.cpu().numpy()[0] == 0:
+                indc.append(i)
+            else:
+                pass
+        else:
+            pass
+            
+    return np.array(vol_RGB), np.array(vol_masks), indc[0], indc[-1]
