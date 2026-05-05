@@ -55,43 +55,10 @@ elif st.session_state.screen == 2:
     upload_dcm_1 = st.sidebar.file_uploader('**Archivos DCM 1**', type=['DCM'],
                                             accept_multiple_files=True, key='dcm1')
     
-    upload_dcm_2 = st.sidebar.file_uploader('**Archivos DCM 2**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm2')
-
-    upload_dcm_3 = st.sidebar.file_uploader('**Archivos DCM 3**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm3')
-
-    upload_dcm_4 = st.sidebar.file_uploader('**Archivos DCM 4**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm4')
-
-    upload_dcm_5 = st.sidebar.file_uploader('**Archivos DCM 5**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm5')
-
-    upload_dcm_6 = st.sidebar.file_uploader('**Archivos DCM 6**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm6')
-    
-    upload_dcm_7 = st.sidebar.file_uploader('**Archivos DCM 7**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm7')
-
-    upload_dcm_8 = st.sidebar.file_uploader('**Archivos DCM 8**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm8')
-
-    upload_dcm_9 = st.sidebar.file_uploader('**Archivos DCM 9**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm9')
-
-    upload_dcm_10 = st.sidebar.file_uploader('**Archivos DCM 10**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm10')
-
-    upload_dcm_11 = st.sidebar.file_uploader('**Archivos DCM 11**', type=['DCM'],
-                                            accept_multiple_files=True, key='dcm11')
-    
     if upload_dcm_1:
         
-        upload_dcms = [upload_dcm_1,upload_dcm_2,upload_dcm_3]#,upload_dcm_4,upload_dcm_5,
-                       #upload_dcm_6,upload_dcm_7,upload_dcm_8,upload_dcm_9,upload_dcm_10,
-                       #upload_dcm_11]
+        upload_dcms = [upload_dcm_1]
         
-        #st.write(len(upload_dcms))
         # ------------------------------------------------------------------------------------
         #                                   SUBIDA DE DATOS
         # ------------------------------------------------------------------------------------
@@ -110,10 +77,8 @@ elif st.session_state.screen == 2:
                 rutas_DCM.append(temp_dcm_org)
 
             st.session_state.rutas_DCM = rutas_DCM
-            st.session_state.NV = len(rutas_DCM)
 
         rutas_DCM = st.session_state.rutas_DCM
-        NV = st.session_state.NV
 		
         # ------------------------------------------------------------------------------------
         #                                      ORIGINAL
@@ -223,11 +188,10 @@ elif st.session_state.screen == 2:
         	'''
         	st.markdown(textwrap.dedent(html_3), unsafe_allow_html=True)
         
-        	N_org_1 = st.slider('Volumen',min_value=1, max_value=NV, step=1,key ='N_org1')
-        	N_fnl_1 = st.slider('Corte',min_value=1, max_value=sld_nums[0], step=1,key ='N_fnl1')
+        	N_1 = st.slider('Corte',min_value=1, max_value=sld_nums[0], step=1,key ='N_1')
 
-        	img_orig_user_1 = Image.open(os.path.join(temp_png_orgs[N_org_1-1], f'slice_{(N_fnl_1-1):03d}.png'))
-        	img_fnl_user_1 = Image.open(os.path.join(temp_png_stds[N_org_1-1], f'slice_{(N_fnl_1-1):03d}.png'))
+        	img_orig_user_1 = Image.open(os.path.join(temp_png_orgs[0], f'slice_{(N_1-1):03d}.png'))
+        	img_fnl_user_1 = Image.open(os.path.join(temp_png_stds[0], f'slice_{(N_1-1):03d}.png'))
 
         	col1, col2 = st.columns(2)
         	with col1:
@@ -246,11 +210,10 @@ elif st.session_state.screen == 2:
         	'''
         	st.markdown(textwrap.dedent(html_3), unsafe_allow_html=True)
         
-        	N_org_2 = st.slider('Volumen',min_value=1, max_value=NV, step=1,key ='N_org2')
-        	N_fnl_2 = st.slider('Corte',min_value=1, max_value=sld_nums[0], step=1,key ='N_fnl2')
+        	N_2 = st.slider('Corte',min_value=1, max_value=sld_nums[0], step=1,key ='N_2')
 
-        	img_orig_user_2 = Image.open(os.path.join(temp_png_stds[N_org_2-1], f'slice_{(N_fnl_2-1):03d}.png'))
-        	img_fnl_user_2 = Image.open(os.path.join(temp_png_LVOTs[N_org_2-1], f'slice_{(N_fnl_2-1):03d}.png'))
+        	img_orig_user_2 = Image.open(os.path.join(temp_png_stds[0], f'slice_{(N_2-1):03d}.png'))
+        	img_fnl_user_2 = Image.open(os.path.join(temp_png_LVOTs[0], f'slice_{(N_2-1):03d}.png'))
 
         	col1, col2 = st.columns(2)
         	with col1:
@@ -262,10 +225,9 @@ elif st.session_state.screen == 2:
         #                                   PESTAÑA DETECCION
         # ------------------------------------------------------------------------------------
         with tab3:
-            N_org_3 = st.slider('',min_value=1, max_value=NV, step=1, key = 'sld_valva_1')
-            N_fnl_3 = st.slider('',min_value=1, max_value=sld_nums[1], step=1, key = 'sld_valva_2')
+            N_3 = st.slider('',min_value=1, max_value=sld_nums[1], step=1, key='N_3')
 
-            img_fnl_user_3 = Image.open(os.path.join(temp_png_YOLOs[N_org_3-1][N_fnl_3-1],'slice_000.png'))
+            img_fnl_user_3 = Image.open(os.path.join(temp_png_YOLOs[0][N_3-1],'slice_000.png'))
 
             valv1, valv2, valv3 = st.columns([1,2,1])
             with valv1:
