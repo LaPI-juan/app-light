@@ -128,6 +128,7 @@ elif st.session_state.screen == 2:
                 temp_png_orgs.append(temp_png_org)
 
             st.session_state.temp_png_orgs = temp_png_orgs
+            st.session_state.sld_nums = sld_nums
 
         temp_png_orgs = st.session_state.temp_png_orgs
         sld_nums = st.session_state.sld_nums
