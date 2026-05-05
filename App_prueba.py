@@ -184,7 +184,7 @@ elif st.session_state.screen == 2:
                 temp_png_LVOT = carpetaPNG(V,0)
                 temp_png_LVOTs.append(temp_png_LVOT)
 
-                V = np.tranpose(m,n,m)
+                V = np.transpose(m,n,m)
                 temp_png_valv = [carpetaPNG(V[np.newaxis,i,:,:],0) for i in range(0,m)]
                 temp_png_valvs.append(temp_png_valv)
             
