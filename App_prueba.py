@@ -202,7 +202,7 @@ elif st.session_state.screen == 2:
                 temp_png_YOLO = []
                 for ruta in temp_png_valv:
                     V = CargarVolumen_YOLO(ruta)
-                    img_YOLO = carpetaPNG(V[:,:,:,0])
+                    img_YOLO = carpetaPNG(V[:,:,:,0],0)
                     temp_png_YOLO.append(img_YOLO)
                 temp_png_YOLOs.append(temp_png_YOLO)
 
