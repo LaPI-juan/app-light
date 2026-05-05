@@ -175,7 +175,6 @@ elif st.session_state.screen == 2:
             V = CargarVolumen_YOLO(ruta)
 			
         temp_png_YOLOs = st.session_state.temp_png_YOLOs
-        st.write(V.shape)
 
         # ------------------------------------------------------------------------------------
         #                                    Deteccion
@@ -185,7 +184,7 @@ elif st.session_state.screen == 2:
             output_dtc = 'modelo_dtc.pt'
             gdown.download(url_dtc, output_dtc, quiet=False)
 
-            temp_png_dtcs, temp_png_masks = [], []
+            temp_png_dtcs, temp_png_masks, Indcs = [], [], []
             for temp_png_YOLO in temp_png_YOLOs:
                 V_RGB, V_mask, i_max, i_min = uso_YOLO('modelo_dtc.pt',
 													   temp_png_YOLO)
@@ -193,12 +192,15 @@ elif st.session_state.screen == 2:
                 temp_png_mask = carpetaPNG(V_mask[:,:,:],0)
                 temp_png_dtcs.append(temp_png_dtc)
                 temp_png_masks.append(temp_png_mask)
+                sld_nums.Indcs([i_max, i_min])
 
             st.session_state.temp_png_dtcs = temp_png_dtcs
             st.session_state.temp_png_masks = temp_png_masks
+            st.session_state.Indcs = Indcs
 
         temp_png_dtcs = st.session_state.temp_png_dtcs
         temp_png_masks = st.session_state.temp_png_masks
+        Indcs = st.session_state.Indcs
 
         tab1, tab2, tab3 = st.tabs(['Estándar', 'LVOT', 'Mascara'])
 
@@ -263,3 +265,73 @@ elif st.session_state.screen == 2:
 
             with valv3:
                 st.write('')
+				
+            html_3 = f'''
+                <div class="card">
+                    <h4>Deteccion</h4>
+                </div>
+            '''
+            st.markdown(textwrap.dedent(html_3), unsafe_allow_html=True)
+                            
+            N_4 = st.slider(' ',min_value=1, max_value=len(temp_png_dtcs), step=1, key = 'N_4')
+            
+            xmin, xmax, z, u = 0, len(temp_png_dtcs), Indcs[0][0], Indcs[0][1]+1 
+            
+            width = 100
+            start = (z-xmin)/(xmax-xmin)*100
+            end = (u-xmin)/(xmax-xmin)*100
+            
+            st.markdown(f'''
+            <div style='width:100%; height:10px; background-color:rgb(89,193,201); position:relative;'>
+                <div style='
+                    position:absolute;
+                    left:{start}%;
+                    width:{end-start}%;
+                    height:100%;
+                    background-color:rgb(47,79,247);'>
+                </div>
+            </div>
+            ''', unsafe_allow_html=True)
+            st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
+
+            simb1, simb2, simb3 = st.columns(3)
+
+            with simb1:
+                st.markdown(
+                    '''
+                    <div style='display:flex; align-items:center;'>
+                        <div style='width:20px; height:20px; background-color:rgb(190,190,190); 
+                        margin-right:10px; border-radius:3px;'></div>
+                        <span><b>Sin deteccion</b></span>
+                    </div>
+                    ''', unsafe_allow_html=True)
+
+            with simb2:
+                st.markdown(
+                    '''
+                    <div style='display:flex; align-items:center;'>
+                        <div style='width:20px; height:20px; background-color:rgb(89,193,201); 
+                        margin-right:10px; border-radius:3px;'></div>
+                        <span><b>Tracto</b></span>
+                    </div>
+                    ''', unsafe_allow_html=True)
+
+            with simb3:
+                st.markdown(
+                    '''
+                    <div style='display:flex; align-items:center;'>
+                        <div style='width:20px; height:20px; background-color:rgb(59,75,247); 
+                        margin-right:10px; border-radius:3px;'></div>
+                        <span><b>Valvula aortica</b></span>
+                    </div>
+                    ''', unsafe_allow_html=True)
+
+            img_orig_user_4 = Image.open(os.path.join(temp_png_dtcs, f'slice_{(N_4-1):03d}.png'))
+            img_fnl_user_4 = Image.open(os.path.join(temp_png_masks, f'slice_{(N_4-1):03d}.png'))
+
+            st.write('')
+            col1, col2 = st.columns(2)
+            with col1:
+                st.image(img_orig_user_4, caption='Deteccion', use_container_width=True)
+            with col2:
+                st.image(img_fnl_user_4, caption='Mascara', use_container_width=True)
