@@ -101,7 +101,7 @@ def uso_YOLO(ruta_modelo, rutas_PNG):
 
     for ruta_PNG in rutas_PNG:
         V = CargarVolumen_YOLO(ruta_PNG)
-        results = [model(V)]
+        results = model(V[0,:,:,:])
         r = results[0]
         conf_arr = r[0].boxes.conf.cpu().numpy()
 		
