@@ -192,7 +192,7 @@ elif st.session_state.screen == 2:
                 temp_png_dtc = carpetaPNG(V_RGB[:,:,:,:],1)
                 temp_png_mask = carpetaPNG(V_mask[:,:,:],0)
                 temp_png_dtcs.append(temp_png_dtc)
-                temp_png_masks.append(temp_png_masks)
+                temp_png_masks.append(temp_png_mask)
 
         tab1, tab2, tab3 = st.tabs(['Estándar', 'LVOT', 'Mascara'])
 
