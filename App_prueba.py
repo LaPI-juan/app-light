@@ -183,7 +183,7 @@ elif st.session_state.screen == 2:
             output_dtc = 'modelo_dtc.pt'
             gdown.download(url_dtc, output_dtc, quiet=False)
 
-            temp_png_dtcs, temp_png_maks = []
+            temp_png_dtcs, temp_png_maks = [], []
             for temp_png_YOLO in temp_png_YOLOs:
                 V_RGB, V_mask, i_max, i_min = uso_YOLO('modelo_dtc.pt',
 													   temp_png_YOLO)
