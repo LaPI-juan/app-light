@@ -180,12 +180,11 @@ elif st.session_state.screen == 2:
             temp_png_valvs, temp_png_LVOTs = [], []
             for temp_dcm_std in temp_dcm_stds:
                 V, _ = process_dicom(p_LVOT[0], p_LVOT[1:4], temp_dcm_std)
-                n,m = V.shape[0], V.shape[1]
                 temp_png_LVOT = carpetaPNG(V,0)
                 temp_png_LVOTs.append(temp_png_LVOT)
 
-                V = V.transpose(m,n,m)
-                temp_png_valv = [carpetaPNG(V[np.newaxis,i,:,:],0) for i in range(0,m)]
+                V = V.transpose(2,0,1)
+                temp_png_valv = [carpetaPNG(V[np.newaxis,i,:,:],0) for i in range(V.shape[1])]
                 temp_png_valvs.append(temp_png_valv)
             
         temp_png_LVOTs = st.session_state.temp_png_LVOTs
