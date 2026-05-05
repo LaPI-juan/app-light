@@ -192,7 +192,6 @@ elif st.session_state.screen == 2:
             
         temp_png_LVOTs = st.session_state.temp_png_LVOTs
         temp_png_valvs = st.session_state.temp_png_valvs
-        st.write(V.shape)
 		
         # ------------------------------------------------------------------------------------
         #                                    YOLO
