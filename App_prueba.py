@@ -179,7 +179,7 @@ elif st.session_state.screen == 2:
             temp_png_valvs, temp_png_LVOTs = [], []
             for temp_dcm_std in temp_dcm_stds:
                 V, _ = process_dicom(p_LVOT,temp_dcm_std)
-				n,m = V.shape[0], V.shape[1]
+                n,m = V.shape[0], V.shape[1]
                 temp_png_LVOT = carpetaPNG(V,0)
                 temp_png_LVOTs.append(temp_png_LVOT)
 
