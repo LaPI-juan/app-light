@@ -202,14 +202,13 @@ elif st.session_state.screen == 2:
                 temp_png_YOLO = []
                 for ruta in temp_png_valv:
                     V = CargarVolumen_YOLO(ruta)
-                    #img_YOLO = carpetaPNG(V[:,:,:,0])
-                    #temp_png_YOLO.append(img_YOLO)
+                    img_YOLO = carpetaPNG(V[:,:,:,0])
+                    temp_png_YOLO.append(img_YOLO)
+                temp_png_YOLOs.append(temp_png_YOLO)
 
-
-#            st.session_state.temp_png_YOLOs = temp_png_YOLOs
+            st.session_state.temp_png_YOLOs = temp_png_YOLOs
 			
-#        temp_png_YOLOs = st.session_state.temp_png_YOLOs
-        st.write(V.shape)
+        temp_png_YOLOs = st.session_state.temp_png_YOLOs
 
         tab1, tab2, tab3 = st.tabs(['Estándar', 'LVOT', 'Mascara'])
 
