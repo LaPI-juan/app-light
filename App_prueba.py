@@ -185,7 +185,7 @@ elif st.session_state.screen == 2:
             output_dtc = 'modelo_dtc.pt'
             gdown.download(url_dtc, output_dtc, quiet=False)
 
-            temp_png_dtcs, temp_png_maks = [], []
+            temp_png_dtcs, temp_png_masks = [], []
             for temp_png_YOLO in temp_png_YOLOs:
                 V_RGB, V_mask, i_max, i_min = uso_YOLO('modelo_dtc.pt',
 													   temp_png_YOLO)
@@ -193,6 +193,12 @@ elif st.session_state.screen == 2:
                 temp_png_mask = carpetaPNG(V_mask[:,:,:],0)
                 temp_png_dtcs.append(temp_png_dtc)
                 temp_png_masks.append(temp_png_mask)
+
+            st.session_state.temp_png_dtcs = temp_png_dtcs
+            st.session_state.temp_png_masks = temp_png_masks
+
+        temp_png_dtcs = st.session_state.temp_png_dtcs
+        temp_png_masks = st.session_state.temp_png_masks
 
         tab1, tab2, tab3 = st.tabs(['Estándar', 'LVOT', 'Mascara'])
 
