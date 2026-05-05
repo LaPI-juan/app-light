@@ -175,6 +175,23 @@ elif st.session_state.screen == 2:
 			
         temp_png_YOLOs = st.session_state.temp_png_YOLOs
 
+        # ------------------------------------------------------------------------------------
+        #                                    Deteccion
+        # ------------------------------------------------------------------------------------
+        if 'temp_png_dtcs' not in st.session_state:
+            url_dtc = 'https://drive.google.com/uc?export=download&id=1Xzhx0ge07ceS5SQU8AtG8bHNB1wDt5aC'
+            output_dtc = 'modelo_dtc.pt'
+            gdown.download(url_dtc, output_dtc, quiet=False)
+
+            temp_png_dtcs, temp_png_maks = []
+            for temp_png_YOLO in temp_png_YOLOs:
+                V_RGB, V_mask, i_max, i_min = uso_YOLO('modelo_dtc.pt',
+													   temp_png_YOLO)
+                temp_png_dtc = carpetaPNG(V_RGB[:,:,:,:],1)
+                temp_png_mask = carpetaPNG(V_mask[:,:,:],0)
+                temp_png_dtcs.append(temp_png_dtc)
+                temp_png_masks.append(temp_png_masks)
+
         tab1, tab2, tab3 = st.tabs(['Estándar', 'LVOT', 'Mascara'])
 
         # ------------------------------------------------------------------------------------
