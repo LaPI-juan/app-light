@@ -81,7 +81,7 @@ def medir_distancia(volumen, p1, p2):
 # ------------------------------------------------------------------------------------
 #                                  Pipeline Completo
 # ------------------------------------------------------------------------------------
-def process_dicom(dicom_folder, axis, angulo, medir=False):
+def process_dicom(angulo, axis, dicom_folder, medir=False):
     
     volumen_original = leer_archivos_dicom(dicom_folder)
     
