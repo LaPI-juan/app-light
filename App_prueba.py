@@ -172,8 +172,10 @@ elif st.session_state.screen == 2:
                 temp_png_YOLOs.append(temp_png_YOLO)
 
             st.session_state.temp_png_YOLOs = temp_png_YOLOs
+            V = CargarVolumen_YOLO(ruta)
 			
         temp_png_YOLOs = st.session_state.temp_png_YOLOs
+        st.write(V.shape)
 
         # ------------------------------------------------------------------------------------
         #                                    Deteccion
