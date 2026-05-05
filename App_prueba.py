@@ -192,6 +192,7 @@ elif st.session_state.screen == 2:
             
         temp_png_LVOTs = st.session_state.temp_png_LVOTs
         temp_png_valvs = st.session_state.temp_png_valvs
+        st.write(V.shape)
 		
         # ------------------------------------------------------------------------------------
         #                                    YOLO
@@ -263,7 +264,7 @@ elif st.session_state.screen == 2:
         # ------------------------------------------------------------------------------------
         with tab3:
             N_org_3 = st.slider('',min_value=1, max_value=2, step=1, key = 'sld_valva_1')
-            N_fnl_3 = st.slider('',min_value=1, max_value=512, step=1, key = 'sld_valva_2')
+            N_fnl_3 = st.slider('',min_value=1, max_value=sld_nums[1], step=1, key = 'sld_valva_2')
 
             img_fnl_user_3 = Image.open(os.path.join(temp_png_YOLOs[N_org_3-1][N_fnl_3-1],'slice_000.png'))
 
