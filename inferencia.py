@@ -94,34 +94,6 @@ def CargarVolumen_YOLO(root):
     return volume
 
 def uso_YOLO(ruta_modelo, rutas_PNG):
-    
-    vol_in = CargarVolumen_YOLO(ruta_PNG)
-    img_list = [vol for vol in vol_in]
-    
-    model = YOLO(ruta_modelo)
-    results = [model(img) for img in img_list]
-    
-    vol_RGB, vol_masks = [], []
-    indc, i = [], -1
-    
-    for r in results:
-        conf_arr = r[0].boxes.conf.cpu().numpy()
-        if conf_arr.size and conf_arr.max() > 0.65:
-            i += 1
-            j = int(np.argmax(conf_arr))
-            vol_RGB.append(cv2.cvtColor(r[0].plot(),cv2.COLOR_BGR2RGB))
-            vol_masks.append(r[0].masks.data.cpu().numpy()[j,:,:])
-            
-            if r[0].boxes.cls.cpu().numpy()[0] == 0:
-                indc.append(i)
-            else:
-                pass
-        else:
-            pass
-            
-    return np.array(vol_RGB), np.array(vol_masks), indc[0], indc[-1]
-
-def uso_YOLO(ruta_modelo, rutas_PNG):
 
     vol_RGB, vol_masks = [], []
     indc, i = [], -1
